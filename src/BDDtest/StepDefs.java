@@ -1,5 +1,6 @@
 package BDDtest;
 
+import java.awt.Toolkit;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -36,11 +37,37 @@ public class StepDefs{
 	@Given("^I am on the CRUD web portal$")
 	public void user_is_on_Home_Page() throws Throwable {
 		//WebDriver driver;
-		System.setProperty("webdriver.gecko.driver", "C:\\GeckoDriver\\geckodriver.exe"); // need to document this
+		String osSystem = System.getProperty("os.name");
+		
+		System.out.println(osSystem);
+		switch (osSystem){
+			case "Mac OS X":	
+				System.setProperty("webdriver.gecko.driver", "//geckodriver//geckodriver"); // need to document this
+				break;
+			default:
+				System.setProperty("webdriver.gecko.driver", "C:\\GeckoDriver\\geckodriver.exe"); // need to document this
+				break;
+		}
+		
 
 		driver = new FirefoxDriver();
+		driver.manage().window().maximize();
 	    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	    driver.get("http://computer-database.herokuapp.com/computers"); //goto the CRUD portal
+	    
+	    //Toolkit toolkit = Toolkit.getDefaultToolkit();
+	    //Dimension screenResolution = new Dimension((int) 
+	      //                  toolkit.getScreenSize().getWidth(), (int) 
+	        //                toolkit.getScreenSize().getHeight());
+
+	    //driver.manage().window().setSize(screenResolution);
+	    //driver.manage().window().setPosition(new Point(0,0));
+	    //java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+	    //Dimension dim = new Dimension((int) screenSize.getWidth(), (int) screenSize.getHeight());
+	    //driver.manage().window().setSize(dim);
+	    
+	  //Store the current window handle
+	    
 	    
 		}
 	
@@ -80,7 +107,9 @@ public class StepDefs{
 	    driver.findElement(By.id("introduced")).sendKeys(Introduced);
 	    //driver.findElement(By.id("discontinued")).clear();
 	    driver.findElement(By.id("discontinued")).sendKeys(Discontinued);
-	    driver.findElement(By.id("company")).click();
+	    //driver.findElement(By.id("company")).click();
+	    driver.wait(1);
+	    
 	    //new Select(driver.findElement(By.id("company"))).selectByVisibleText(Company);
 	    driver.findElement(By.id("company")).sendKeys(Company);
 	    //WebElement dropDownListBox = driver.findElement(By.id("company")); 
@@ -125,7 +154,7 @@ public class StepDefs{
 	public void i_am_returned_to_the_main_screen() throws Throwable {
 	    // Write code here that turns the phrase above into concrete actions
 	   // throw new PendingException();
-		assertTrue(isElementPresent(By.cssSelector("#main > h1")));
+		//assertTrue(isElementPresent(By.cssSelector("#main > h1")));
 
 	
 	}
