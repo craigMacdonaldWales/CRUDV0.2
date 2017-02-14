@@ -1,6 +1,6 @@
 Feature: cancel computer entry
 
-  Scenario: add new computer
+  Scenario: cancel computer entry
     Given I am on the CRUD web portal
     And I have clicked the add a new computer button
     And I have entered computer details

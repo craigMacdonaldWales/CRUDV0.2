@@ -18,6 +18,16 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+import org.junit.*;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+
+
 
 public class StepDefs{
 
@@ -107,13 +117,17 @@ public class StepDefs{
 	    driver.findElement(By.id("introduced")).sendKeys(Introduced);
 	    //driver.findElement(By.id("discontinued")).clear();
 	    driver.findElement(By.id("discontinued")).sendKeys(Discontinued);
-	    //driver.findElement(By.id("company")).click();
-	    driver.wait(1);
+	    driver.findElement(By.id("company")).click();
+	    //driver.wait();
+	    Thread.sleep(2000);
+	    new Select(driver.findElement(By.id("company"))).selectByVisibleText(Company);
 	    
-	    //new Select(driver.findElement(By.id("company"))).selectByVisibleText(Company);
-	    driver.findElement(By.id("company")).sendKeys(Company);
+	    //driver.findElement(By.id("company")).sendKeys(Company);
 	    //WebElement dropDownListBox = driver.findElement(By.id("company")); 
-	   // Select clickThis = new Select(dropDownListBox); clickThis.selectByValue("Apple Inc.");
+	    //Select clickThis = new Select(dropDownListBox); clickThis.selectByValue("Apple Inc.");
+	    
+	    
+	    //new Select(driver.findElement(By.id("company")).selectByVisibleText(Company));
 		
 	    //throw new PendingException();
 	}
@@ -155,11 +169,60 @@ public class StepDefs{
 	    // Write code here that turns the phrase above into concrete actions
 	   // throw new PendingException();
 		//assertTrue(isElementPresent(By.cssSelector("#main > h1")));
-
+		 // public void testAssertelement() throws Exception {
+			    //assertTrue(isElementPresent(By.cssSelector("form")));
+			 // }
 	
+		assertTrue(isElementPresent(By.cssSelector("form")));
+		
+		
+	}
+	
+	public boolean isElementPresent(By by) {
+	    try {
+	      driver.findElements(by);
+	      return true;
+	    } catch (org.openqa.selenium.NoSuchElementException e) {
+	      return false;
+	    }
 	}
 	
 	
+	@Given("^I have recalled the created computer$")
+		public void i_have_recalled_the_created_computer() throws Throwable{
+	    // Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
+	  
+	    driver.findElement(By.id("searchbox")).clear();
+	    driver.findElement(By.id("searchbox")).sendKeys(Name);
+	    driver.findElement(By.id("searchsubmit")).click();
+	    
+	    
+	    driver.findElement(By.linkText(Name)).click();
+	    //driver.findElement(By.id("link=/" + Name)).click();
+	    
+	    
+	}
 
+	@Given("^I delete the created computer$") 
+	    // Write code here that turns the phrase above into concrete actions
+		public void i_delete_the_created_computer() throws Throwable{
+			    // Write code here that turns the phrase above into concrete actions
+			    //throw new PendingException();
+			  
+		    driver.findElement(By.cssSelector("input.btn.danger")).click();
+
+
+			}
+	
+	@Given("^The computer is deleted$")
+		public void the_computer_is_deleted() throws Throwable {
+		
+
+	    String expectedConfBanner;
+		expectedConfBanner = "Done! Computer has been deleted";
+		String actualConfBanner = driver.findElement(By.cssSelector("div.alert-message.warning")).getText();
+		assertEquals(expectedConfBanner, actualConfBanner);
+	}
 }
 
