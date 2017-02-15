@@ -1,6 +1,8 @@
 package BDDtest;
 
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +34,7 @@ import org.openqa.selenium.support.ui.Select;
 public class StepDefs{
 
 	public static WebDriver driver;
+	public static String osSystem = System.getProperty("os.name");
 	public static String Name;
 	public static String Introduced;
 	public static String Discontinued;
@@ -47,7 +50,7 @@ public class StepDefs{
 	@Given("^I am on the CRUD web portal$")
 	public void user_is_on_Home_Page() throws Throwable {
 		//WebDriver driver;
-		String osSystem = System.getProperty("os.name");
+		//String osSystem = 
 		
 		System.out.println(osSystem);
 		switch (osSystem){
@@ -119,10 +122,24 @@ public class StepDefs{
 	    driver.findElement(By.id("discontinued")).sendKeys(Discontinued);
 	    driver.findElement(By.id("company")).click();
 	    //driver.wait();
-	    Thread.sleep(2000);
-	    new Select(driver.findElement(By.id("company"))).selectByVisibleText(Company);
 	    
-	    //driver.findElement(By.id("company")).sendKeys(Company);
+	    
+	    
+	    switch (osSystem){
+		case "Mac OS X":	
+			 // need to document this
+			Thread.sleep(1000);
+			new Select(driver.findElement(By.id("company"))).selectByVisibleText(Company);
+			break;
+		default:
+			System.out.println("windows list select");
+			driver.findElement(By.id("company")).click();
+			driver.findElement(By.id("company")).sendKeys(Company);
+			break;
+	}
+	    
+	    
+	    //
 	    //WebElement dropDownListBox = driver.findElement(By.id("company")); 
 	    //Select clickThis = new Select(dropDownListBox); clickThis.selectByValue("Apple Inc.");
 	    
@@ -224,5 +241,47 @@ public class StepDefs{
 		String actualConfBanner = driver.findElement(By.cssSelector("div.alert-message.warning")).getText();
 		assertEquals(expectedConfBanner, actualConfBanner);
 	}
+	
+	@Given("^I have created a new computer$") // compound step definition....
+	public void i_have_created_a_new_computer(DataTable computerDetails) throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		user_is_on_Home_Page(); // nav to portal
+		i_click_create_this_computer(); // click create computer
+		
+		// define the input data for the new computer
+		//List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		//Map<String, Object> computerData = new HashMap<String, Object>();
+		//computerData.put("Name", "Computer123");
+		//computerData.put("Introduced", "1900-01-01");
+		//computerData.put("Discontinued", "1910-01-01");
+		//computerData.put("Company", "Apple Inc.");
+		//list.add(computerData);
+		// convert the  map to data table
+		i_have_entered_computer_details(computerDetails); // enter computer details
+		i_click_create_this_computer(); // click create computer button
+		
+	}
+	
+	@When("^I search for the computer using the name filter$")
+	public void i_search_for_the_computer_using_the_name_filter() throws Throwable {
+		i_have_recalled_the_created_computer();
+	}
+	
+	
+	@Then("^the computer details are displayed$")
+	public void the_computer_details_are_displayed() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	   // throw new PendingException();
+		//assertEquals(Name, driver.findElement(By.id("name")).getText());
+		//assertEquals(Introduced, driver.findElement(By.id("introduced")).getText());
+		//assertEquals(Discontinued, driver.findElement(By.id("discontinued")).getText());
+		//assertEquals(Company, driver.findElement(By.id("company")).getText());
+	
+		String resultBodyText = driver.findElement(By.tagName("BODY")).getText();
+		System.out.println(resultBodyText);
+
+		
+	}
+	
 }
 
