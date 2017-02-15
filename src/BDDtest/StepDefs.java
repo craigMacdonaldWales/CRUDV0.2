@@ -1,6 +1,7 @@
 package BDDtest;
 
 import java.awt.Toolkit;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -280,15 +281,20 @@ public class StepDefs{
 		//assertEquals(Discontinued, driver.findElement(By.id("discontinued")).getText());
 		//assertEquals(Company, driver.findElement(By.id("company")).getText());
 		
-	
-		Date date = new SimpleDateFormat("dd-mmm-yyyy").parse("");
-		String formattedDateIntroduced = new SimpleDateFormat("dd-mmm-yyyy").format(date);
-		String formattedDateDiscontinued = new SimpleDateFormat("dd-mmm-yyyy").format(date);
-		System.out.println(formattedDateIntroduced);
-		System.out.println(formattedDateDiscontinued);
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+		Date IntroducedParsed = df.parse(Introduced);
+		Date DiscontinuedParsed = df.parse(Discontinued);
+		
+		String expectedResultString = Name + " " + IntroducedParsed + " " + DiscontinuedParsed + " " + Company;
+		System.out.println(expectedResultString);
+		
+		//Date date = new SimpleDateFormat("dd-mmm-yyyy").parse("");
+		//String formattedDateIntroduced = new SimpleDateFormat("dd-mmm-yyyy").format(Introduced);
+		//String formattedDateDiscontinued = new SimpleDateFormat("dd-mmm-yyyy").format(Discontinued);
+		//System.out.println(formattedDateIntroduced);
+		//System.out.println(formattedDateDiscontinued);
 		//String expectedResultString = Name + " " + Introduced + " " + Discontinued + " " + Company;
 	
-		String expectedResultString = Name + " " + formattedDateIntroduced + " " + formattedDateDiscontinued + " " + Company;
 		
 		String resultBodyText = driver.findElement(By.tagName("BODY")).getText();
 		
