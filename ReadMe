@@ -1,0 +1,16 @@
+Dependencies:
+Cucumber Jars
+Selenium Jars
+ - added to the classpath.
+
+
+Geckodriver downloaded located  as per the driver launch switch:
+
+case "Mac OS X":	
+				System.setProperty("webdriver.gecko.driver", "//geckodriver//geckodriver");
+				break;
+			default:
+				System.setProperty("webdriver.gecko.driver", "C:\\GeckoDriver\\geckodriver.exe");
+				break;
+				
+How to run: 

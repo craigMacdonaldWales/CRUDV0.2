@@ -1,7 +1,10 @@
 package BDDtest;
 
 import java.awt.Toolkit;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -276,10 +279,31 @@ public class StepDefs{
 		//assertEquals(Introduced, driver.findElement(By.id("introduced")).getText());
 		//assertEquals(Discontinued, driver.findElement(By.id("discontinued")).getText());
 		//assertEquals(Company, driver.findElement(By.id("company")).getText());
+		
 	
+		Date date = new SimpleDateFormat("dd-mmm-yyyy").parse("");
+		String formattedDateIntroduced = new SimpleDateFormat("dd-mmm-yyyy").format(date);
+		String formattedDateDiscontinued = new SimpleDateFormat("dd-mmm-yyyy").format(date);
+		System.out.println(formattedDateIntroduced);
+		System.out.println(formattedDateDiscontinued);
+		//String expectedResultString = Name + " " + Introduced + " " + Discontinued + " " + Company;
+	
+		String expectedResultString = Name + " " + formattedDateIntroduced + " " + formattedDateDiscontinued + " " + Company;
+		
 		String resultBodyText = driver.findElement(By.tagName("BODY")).getText();
-		System.out.println(resultBodyText);
-
+		
+		String lines[] = resultBodyText.split("\\r?\\n");
+		System.out.println(Arrays.toString(lines));
+		String computerDetails = lines[4];
+		System.out.println(computerDetails); // it's a hack but it works!
+		
+		assertEquals(expectedResultString,computerDetails);
+		
+		System.out.println(lines);
+		
+		//assertEquals(expectedResultString, resultBodyText);
+		
+		
 		
 	}
 	
