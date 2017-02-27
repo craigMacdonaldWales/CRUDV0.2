@@ -1,38 +1,28 @@
 package BDDtest;
 
-import java.awt.Toolkit;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import static org.junit.Assert.*; 
 
-import org.openqa.selenium.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import cucumber.api.DataTable;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import java.util.regex.Pattern;
-import java.util.concurrent.TimeUnit;
-import org.junit.*;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.Select;
-
+import taf.ActorLibrary;
+import taf.SpineReturn;
 
 
 public class StepDefs{
@@ -43,6 +33,7 @@ public class StepDefs{
 	public static String Introduced;
 	public static String Discontinued;
 	public static String Company;
+	public static HashMap<String,String> scenarioInfoContainer;
 	
 	
 	public static void main(String[] args) {
@@ -55,6 +46,8 @@ public class StepDefs{
 	public void user_is_on_Home_Page() throws Throwable {
 		//WebDriver driver;
 		//String osSystem = 
+		
+		//ActorLibrary.scenarioExecution(1);
 		
 		System.out.println(osSystem);
 		switch (osSystem){
@@ -248,21 +241,42 @@ public class StepDefs{
 	
 	@Given("^I have created a new computer$") // compound step definition....
 	public void i_have_created_a_new_computer(DataTable computerDetails) throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
+	    // Write code here that turns the phra_usinse above into concrete actions
+		
+		
 		user_is_on_Home_Page(); // nav to portal
 		i_click_create_this_computer(); // click create computer
 		
-		// define the input data for the new computer
-		//List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		//Map<String, Object> computerData = new HashMap<String, Object>();
-		//computerData.put("Name", "Computer123");
-		//computerData.put("Introduced", "1900-01-01");
-		//computerData.put("Discontinued", "1910-01-01");
-		//computerData.put("Company", "Apple Inc.");
-		//list.add(computerData);
-		// convert the  map to data table
 		i_have_entered_computer_details(computerDetails); // enter computer details
 		i_click_create_this_computer(); // click create computer button
+		
+		//String[] argArray = new String[] {"SCENARIOINDEX:1"}; 
+		
+		//SpineReturn rs = new SpineReturn();
+		///SpineReturn rs = ActorLibrary.main(argArray); // kick off scenario 1
+		//driver = rs.getDriver();
+		//scenarioInfoContainer = rs.getScenarioInfoContainer();
+		
+		//Name = scenarioInfoContainer.get("NAME");
+		//System.out.println("Name handed over from SCAFRA = " + Name);
+		
+	}
+	
+	
+	@Given("^I have created a new computer using pre requisite scenario one$") // compound step definition....
+	public void i_have_created_a_new_computer_using_pre_requisite_scenario_one() throws Throwable {
+	    // Write code here that turns the phra_usinse above into concrete actions
+		
+		String[] argArray = new String[] {"SCENARIOINDEX:1"}; 
+		
+		//SpineReturn rs = new SpineReturn();
+		SpineReturn rs = ActorLibrary.main(argArray); // kick off scenario 1
+		driver = rs.getDriver();
+		scenarioInfoContainer = rs.getScenarioInfoContainer();
+		
+		Name = scenarioInfoContainer.get("NAME");
+		System.out.println("Driver handed over from SCAFRA = " + driver);
+		System.out.println("Name handed over from SCAFRA = " + Name);
 		
 	}
 	
