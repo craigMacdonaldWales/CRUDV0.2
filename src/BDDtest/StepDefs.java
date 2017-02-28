@@ -266,18 +266,7 @@ public class StepDefs{
 	@Given("^I have created a new computer using pre requisite scenario one$") // compound step definition....
 	public void i_have_created_a_new_computer_using_pre_requisite_scenario_one() throws Throwable {
 	    // Write code here that turns the phra_usinse above into concrete actions
-		
-		String[] argArray = new String[] {"SCENARIOINDEX:1"}; 
-		
-		//SpineReturn rs = new SpineReturn();
-		SpineReturn rs = ActorLibrary.main(argArray); // kick off scenario 1
-		driver = rs.getDriver();
-		scenarioInfoContainer = rs.getScenarioInfoContainer();
-		
-		Name = scenarioInfoContainer.get("NAME");
-		System.out.println("Driver handed over from SCAFRA = " + driver);
-		System.out.println("Name handed over from SCAFRA = " + Name);
-		
+		scafra_call ("SCENARIOINDEX:1");
 	}
 	
 	@When("^I search for the computer using the name filter$")
@@ -325,6 +314,84 @@ public class StepDefs{
 		
 		
 		
+	}
+	
+	
+	@Given("^I have created a new computer and selected for edit using pre requisite scenario two$")
+	public void i_have_created_a_new_computer_and_selected_for_edit_using_pre_requisite_scenario_two() throws Throwable {
+		scafra_call ("SCENARIOINDEX:2");
+	}
+
+	
+	@Given("^I have entered computer details using pre requisite scenario one point one$")
+	public void i_have_entered_computer_details_using_pre_requisite_scenario_one_point_one() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
+		scafra_call ("SCENARIOINDEX:1.1");
+	}
+
+	
+	public void scafra_call (String scenarioArg){ // use this function call to launch a scafra pre-requisite scenario
+		
+		// current command line options:
+		// 1. SCENARIO_INDEX
+		// passed in using format 'SCENARIOINDEX:n' where 'n' is the numeric value that represents the scenario index
+		// - i.e. SCENARIOINDEX:1 will call pre-requisite scenario 1.
+		// other options TBC
+		
+		String[] argArray = new String[] {scenarioArg}; 
+		
+		//SpineReturn rs = new SpineReturn();
+		SpineReturn rs = ActorLibrary.main(argArray); // kick off scenario 
+		driver = rs.getDriver();
+		scenarioInfoContainer = rs.getScenarioInfoContainer();
+		String scafraExecStatus = scenarioInfoContainer.get("STATUS"); // pass, fail?
+		
+		Name = scenarioInfoContainer.get("NAME");
+		System.out.println("Driver handed over from SCAFRA = " + driver);
+		System.out.println("Name handed over from SCAFRA = " + Name);
+		
+		System.out.println("PASS / FAIL execution status handed over from SCAFRA = " + scafraExecStatus);
+		
+		assertEquals("pass",scafraExecStatus); // this is a bodge!
+		
+		//return scafraExecStatus;
+		//throw new PendingException();
+		
+	}
+	
+	@When("^I edit the computer record$")
+	public void i_edit_the_computer_record() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		
+		Name = Name + "edit test"; // create updated name
+		
+		driver.findElement(By.id("name")).sendKeys(Name); // edit the name
+		
+		driver.findElement(By.xpath("//input[@value='Save this computer']")).click(); // click save
+		
+	    //throw new PendingException();
+	}
+	
+	
+	@Then("^The computer record is is edited$")
+	public void the_computer_record_is_is_edited() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
+	
+		 // Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
+		// Warning: assertTextPresent may require manual changes
+		String expectedConfBanner;
+		expectedConfBanner = "Done! Computer " + Name + " has been updated";
+		String actualConfBanner = driver.findElement(By.cssSelector("div.alert-message.warning")).getText();
+		//assertTextPresent(driver.findElement(By.cssSelector("BODY")).getText().matches(expectedConfBanner));
+
+		// Warning: assertTextPresent may require manual changes
+		assertEquals(expectedConfBanner, actualConfBanner);
+		
+		// I want to write a fancy method for interrogating the table, but I don't have time!
+	
 	}
 	
 }
