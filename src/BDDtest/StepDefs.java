@@ -22,6 +22,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import taf.ActorLibrary;
+import taf.OperationStepProcess;
 import taf.SpineReturn;
 
 
@@ -368,7 +369,9 @@ public class StepDefs{
 		
 		driver.findElement(By.id("name")).sendKeys(Name); // edit the name
 		
-		driver.findElement(By.xpath("//input[@value='Save this computer']")).click(); // click save
+		//driver.findElement(By.xpath("//input[@value='Save this computer']")).click(); // click save
+		
+		OperationStepProcess.operationExecution("CRUD","click save this computer button"); // experimental scafra call
 		
 	    //throw new PendingException();
 	}
